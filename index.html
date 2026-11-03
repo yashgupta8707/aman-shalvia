@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a0f0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Shalvia &amp; Aman · 25–26 January 2027</title>
+  <meta name="description" content="Four functions, four moods — the celebrations of Shalvia & Aman, 25–26 January 2027." />
+  <meta property="og:title" content="You're invited 💍 Shalvia & Aman" />
+  <meta property="og:description" content="Four functions, four moods · 25–26 January 2027" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/img/hero.jpg" />
+  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="responsive.css?v=4" />
+</head>
+<body data-theme="intro">
+
+  <!-- ============ OPENING: the sealed invitation ============ -->
+  <div id="opening" class="opening" aria-hidden="false">
+    <div class="door door-left"><div class="door-pattern"></div></div>
+    <div class="door door-right"><div class="door-pattern"></div></div>
+    <div class="opening-content">
+      <p class="opening-kicker">You are invited to the celebrations of</p>
+      <h1 class="opening-names">Shalvia <span>&amp;</span> Aman</h1>
+      <button id="openBtn" class="seal" aria-label="Open the invitation">
+        <span class="seal-ring"></span>
+        <span class="seal-text">S<em>&amp;</em>A</span>
+      </button>
+      <p class="opening-hint">Tap the seal to open <span class="hint-note">♪ with music</span></p>
+    </div>
+  </div>
+
+  <!-- Ambient particles (petals / glitter / stars change with each function) -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- ============ FLOATING MUSIC PLAYER ============ -->
+  <aside id="player" class="player" aria-label="Music player">
+    <button id="playBtn" class="vinyl-btn" aria-label="Play or pause music">
+      <span class="vinyl"><span class="vinyl-label"></span></span>
+      <span class="play-icon" aria-hidden="true"></span>
+    </button>
+    <div class="player-info">
+      <span class="now-label">Now playing</span>
+      <span id="nowPlaying" class="now-title">Overture</span>
+    </div>
+    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </aside>
+
+  <!-- Scroll progress -->
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ============ CHAPTER NAV (same on phone, tablet, desktop) ============ -->
+  <nav id="chapters" class="chapters" aria-label="Jump to a function">
+    <a href="#haldi" data-for="haldi" style="--d:#f2a900"><i></i><span>Haldi</span></a>
+    <a href="#sangeet" data-for="sangeet" style="--d:#e9c46a"><i></i><span>Sangeet</span></a>
+    <a href="#pheras" data-for="pheras" style="--d:#e0446a"><i></i><span>Pheras</span></a>
+    <a href="#reception" data-for="reception" style="--d:#3fbf95"><i></i><span>Reception</span></a>
+  </nav>
+
+  <!-- ============ LIGHTBOX for illustrations ============ -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Illustration" hidden>
+    <button class="lb-close" aria-label="Close">&times;</button>
+    <figure>
+      <img alt="" />
+      <figcaption></figcaption>
+    </figure>
+    <p class="lb-hint">Tap anywhere or swipe down to close</p>
+  </div>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section id="hero" class="hero" data-theme="intro" data-track="intro">
+      <svg class="mandala" viewBox="0 0 200 200" aria-hidden="true"><use href="#mandala" /></svg>
+      <div class="hero-grid">
+      <figure class="portrait reveal">
+        <div class="portrait-arch" role="button" tabindex="0" aria-label="View illustration full screen">
+          <img src="assets/img/hero.jpg" alt="Illustration of Shalvia in a red bridal lehenga and Aman in an ivory sherwani under a marigold arch" />
+        </div>
+        <span class="portrait-notes" aria-hidden="true"><i>♪</i><i>♫</i><i>♩</i></span>
+      </figure>
+      <div class="hero-frame">
+        <p class="kicker reveal">With joy in our hearts</p>
+        <h1 class="hero-names reveal">
+          <span class="name">Shalvia</span>
+          <span class="amp">&amp;</span>
+          <span class="name">Aman</span>
+        </h1>
+        <div class="divider reveal"><span></span><svg viewBox="0 0 24 24"><use href="#note" /></svg><span></span></div>
+        <p class="hero-dates reveal">25 &ndash; 26 January 2027</p>
+        <p class="hero-lede reveal">Four functions, four moods &mdash; a quick reference for what to wear and when, across two days of celebration.</p>
+
+        <div class="countdown reveal" id="countdown" aria-live="polite">
+          <div><b id="cd-days">00</b><span>Days</span></div>
+          <div><b id="cd-hours">00</b><span>Hours</span></div>
+          <div><b id="cd-mins">00</b><span>Minutes</span></div>
+          <div><b id="cd-secs">00</b><span>Seconds</span></div>
+        </div>
+
+        <a class="btn reveal" id="saveDate" target="_blank" rel="noopener">Save the dates</a>
+      </div>
+      </div>
+      <a href="#tracklist" class="scroll-cue" aria-label="Scroll to the line-up"><span></span></a>
+    </section>
+
+    <!-- ============ TRACKLIST / ALBUM OVERVIEW ============ -->
+    <section id="tracklist" class="tracklist" data-theme="intro" data-track="intro">
+      <p class="kicker reveal">The celebration, on record</p>
+      <h2 class="section-title reveal">The Line-up</h2>
+      <p class="section-sub reveal">Two days, four tracks. Tap any track to jump to its mood &amp; dress code.</p>
+
+      <div class="album reveal">
+        <div class="album-cover">
+          <div class="album-disc"><span>S &amp; A</span></div>
+          <div class="album-sleeve">
+            <span class="sleeve-kicker">The Wedding Album</span>
+            <span class="sleeve-title">Shalvia<br/>&amp; Aman</span>
+            <span class="sleeve-year">MMXXVII</span>
+          </div>
+        </div>
+
+        <div class="sides">
+          <div class="side">
+            <h3><span>Side A</span> Day One · 25 January 2027</h3>
+            <a href="#haldi" class="track" data-color="haldi">
+              <span class="t-no">01</span>
+              <span class="t-name">Haldi<small>Royal Rajasthani Hues</small></span>
+              <span class="t-time">11:00 AM</span>
+            </a>
+            <a href="#sangeet" class="track" data-color="sangeet">
+              <span class="t-no">02</span>
+              <span class="t-name">Tilak &amp; Sangeet<small>Glitz &amp; Glam</small></span>
+              <span class="t-time">From 5 PM</span>
+            </a>
+          </div>
+          <div class="side">
+            <h3><span>Side B</span> Day Two · 26 January 2027</h3>
+            <a href="#pheras" class="track" data-color="pheras">
+              <span class="t-no">03</span>
+              <span class="t-name">Baraat &amp; Pheras<small>Crimson Romance</small></span>
+              <span class="t-time">Daytime</span>
+            </a>
+            <a href="#reception" class="track" data-color="reception">
+              <span class="t-no">04</span>
+              <span class="t-name">Reception<small>Night of Grandeur</small></span>
+              <span class="t-time">Evening</span>
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 01 · HALDI ============ -->
+    <section id="haldi" class="event event-haldi" data-theme="haldi" data-track="haldi">
+      <div class="event-bg" aria-hidden="true">
+        <div class="jharokha"></div>
+      </div>
+      <div class="event-inner">
+        <figure class="scene reveal">
+          <div class="disc" aria-hidden="true"><span>01</span></div>
+          <div class="sleeve" role="button" tabindex="0" aria-label="View illustration full screen"><img src="assets/img/haldi.jpg" alt="Shalvia and Aman in Rajasthani poshak and kurta, laughing during the Haldi ceremony among marigolds" loading="lazy" /></div>
+          <figcaption><span>Side A</span> Track 01</figcaption>
+        </figure>
+        <div class="event-copy">
+        <header class="event-head">
+          <div>
+            <p class="event-meta reveal"><span>Day One</span> 25 January 2027 · 11:00 AM</p>
+            <h2 class="event-title reveal">Haldi</h2>
+            <p class="event-theme reveal"><span>Theme</span> Royal Rajasthani Hues</p>
+            <ul class="palette reveal" aria-label="Colour palette">
+              <li style="--c:#f2a900" title="Marigold"></li>
+              <li style="--c:#e94e1b" title="Saffron"></li>
+              <li style="--c:#d6246e" title="Rani pink"></li>
+              <li style="--c:#1a9e9a" title="Peacock teal"></li>
+              <li style="--c:#f6e3b4" title="Haldi cream"></li>
+            </ul>
+            <p class="swatch-name" aria-live="polite">Tap a colour</p>
+          </div>
+        </header>
+        <div class="attire">
+          <article class="attire-card reveal">
+            <h4>Women</h4>
+            <p>Traditional Rajasthani <em>poshaks</em> &mdash; ghagra-choli with odhni.</p>
+          </article>
+          <article class="attire-card reveal">
+            <h4>Men</h4>
+            <p>Matching kurtas in complementing shades.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 · TILAK & SANGEET ============ -->
+    <section id="sangeet" class="event event-sangeet event-reverse" data-theme="sangeet" data-track="sangeet">
+      <div class="event-bg" aria-hidden="true">
+        <div class="disco"></div>
+        <div class="spotlight s1"></div><div class="spotlight s2"></div>
+      </div>
+      <div class="event-inner">
+        <figure class="scene reveal">
+          <div class="disc" aria-hidden="true"><span>02</span></div>
+          <div class="sleeve" role="button" tabindex="0" aria-label="View illustration full screen"><img src="assets/img/sangeet.jpg" alt="Shalvia in a sequinned lehenga and Aman in a tuxedo dancing under a disco ball at the Sangeet" loading="lazy" /></div>
+          <figcaption><span>Side A</span> Track 02</figcaption>
+        </figure>
+        <div class="event-copy">
+        <header class="event-head">
+          <div>
+            <p class="event-meta reveal"><span>Day One</span> 25 January 2027 · Evening from 5 PM</p>
+            <h2 class="event-title reveal">Tilak &amp; Sangeet</h2>
+            <p class="event-theme reveal"><span>Theme</span> Glitz &amp; Glam</p>
+            <ul class="palette reveal" aria-label="Colour palette">
+              <li style="--c:linear-gradient(135deg,#f9e29c,#b8862b)" title="Gold"></li>
+              <li style="--c:linear-gradient(135deg,#f4f4f4,#9a9a9a)" title="Silver"></li>
+              <li style="--c:linear-gradient(135deg,#e8c1b0,#a46a58)" title="Rose gold"></li>
+              <li style="--c:linear-gradient(135deg,#3a3a3a,#0a0a0a)" title="Midnight black"></li>
+              <li style="--c:linear-gradient(135deg,#d7c3ff,#6c4bb6)" title="Holographic"></li>
+            </ul>
+            <p class="swatch-name" aria-live="polite">Tap a colour</p>
+          </div>
+        </header>
+        <div class="attire">
+          <article class="attire-card reveal">
+            <h4>Women</h4>
+            <p>Sequins and metallics throughout &mdash; shimmering lehengas or embellished gowns with statement jewelry.</p>
+          </article>
+          <article class="attire-card reveal">
+            <h4>Men</h4>
+            <p>Formals &mdash; tuxedos and coats &mdash; with a structured silhouette.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 · BARAAT & PHERAS ============ -->
+    <section id="pheras" class="event event-pheras" data-theme="pheras" data-track="pheras">
+      <div class="event-bg" aria-hidden="true">
+        <svg class="mandap" viewBox="0 0 400 300" preserveAspectRatio="xMidYMax meet"><use href="#mandapShape" /></svg>
+      </div>
+      <div class="event-inner">
+        <figure class="scene reveal">
+          <div class="disc" aria-hidden="true"><span>03</span></div>
+          <div class="sleeve" role="button" tabindex="0" aria-label="View illustration full screen"><img src="assets/img/pheras.jpg" alt="Shalvia in a ruby bridal lehenga and Aman in an ivory sherwani taking pheras around the sacred fire" loading="lazy" /></div>
+          <figcaption><span>Side B</span> Track 03</figcaption>
+        </figure>
+        <div class="event-copy">
+        <header class="event-head">
+          <div>
+            <p class="event-meta reveal"><span>Day Two</span> 26 January 2027 · Daytime</p>
+            <h2 class="event-title reveal">Baraat &amp; Pheras</h2>
+            <p class="event-theme reveal"><span>Theme</span> Crimson Romance</p>
+            <ul class="palette reveal" aria-label="Colour palette">
+              <li style="--c:#7a0f1f" title="Deep ruby"></li>
+              <li style="--c:#b3122e" title="Crimson"></li>
+              <li style="--c:#e0446a" title="Rani pink"></li>
+              <li style="--c:#f3a6b8" title="Soft rose"></li>
+              <li style="--c:#d4af37" title="Gold"></li>
+            </ul>
+            <p class="swatch-name" aria-live="polite">Tap a colour</p>
+          </div>
+        </header>
+        <div class="attire">
+          <article class="attire-card reveal">
+            <h4>Women</h4>
+            <p>Shades of red and pink &mdash; from deep ruby to soft rose.</p>
+          </article>
+          <article class="attire-card reveal">
+            <h4>Men</h4>
+            <p>Ivory, gold or maroon bandhgalas or sadris &mdash; complementing the palette without competing with it.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 · RECEPTION ============ -->
+    <section id="reception" class="event event-reception event-reverse" data-theme="reception" data-track="reception">
+      <div class="event-bg" aria-hidden="true">
+        <div class="moon"></div>
+        <svg class="chandelier" viewBox="0 0 200 160" aria-hidden="true"><use href="#chandelierShape" /></svg>
+      </div>
+      <div class="event-inner">
+        <figure class="scene reveal">
+          <div class="disc" aria-hidden="true"><span>04</span></div>
+          <div class="sleeve" role="button" tabindex="0" aria-label="View illustration full screen"><img src="assets/img/reception.jpg" alt="Shalvia in emerald velvet and Aman in a sapphire bandhgala dancing under a chandelier at the Reception" loading="lazy" /></div>
+          <figcaption><span>Side B</span> Track 04</figcaption>
+        </figure>
+        <div class="event-copy">
+        <header class="event-head">
+          <div>
+            <p class="event-meta reveal"><span>Day Two</span> 26 January 2027 · Evening</p>
+            <h2 class="event-title reveal">Reception</h2>
+            <p class="event-theme reveal"><span>Theme</span> Night of Grandeur</p>
+            <ul class="palette reveal" aria-label="Colour palette">
+              <li style="--c:#0f6b4f" title="Emerald"></li>
+              <li style="--c:#1f3f8f" title="Sapphire"></li>
+              <li style="--c:#6d1a36" title="Wine"></li>
+              <li style="--c:#2b1840" title="Amethyst night"></li>
+              <li style="--c:#d4af37" title="Antique gold"></li>
+            </ul>
+            <p class="swatch-name" aria-live="polite">Tap a colour</p>
+          </div>
+        </header>
+        <div class="attire attire-single">
+          <article class="attire-card reveal">
+            <h4>Women &amp; Men</h4>
+            <p>Rich Indian eveningwear in jewel tones &mdash; emerald, sapphire, wine &mdash; velvet and silk with statement pieces.</p>
+          </article>
+          <article class="attire-card note-card reveal">
+            <h4>Note</h4>
+            <p>Any formal Indian attire welcome; the mood is after-dark elegance rather than a strict palette.</p>
+          </article>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINALE ============ -->
+    <footer class="finale" data-theme="intro" data-track="intro">
+      <svg class="mandala small" viewBox="0 0 200 200" aria-hidden="true"><use href="#mandala" /></svg>
+      <p class="finale-line reveal">With love, for the celebrations of</p>
+      <h2 class="finale-names reveal">Shalvia &amp; Aman</h2>
+      <p class="finale-dates reveal">25 &ndash; 26 January 2027</p>
+      <a href="#hero" class="btn ghost reveal">Play it again ↺</a>
+    </footer>
+  </main>
+
+  <!-- ============ SVG SYMBOLS ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="note" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M9 17.5a3 3 0 1 1-2-2.83V5l12-2v11.5a3 3 0 1 1-2-2.83V6.3L9 7.6v9.9z"/>
+      </symbol>
+      <symbol id="mandala" viewBox="0 0 200 200">
+        <g fill="none" stroke="currentColor" stroke-width="0.8">
+          <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="80"/>
+          <circle cx="100" cy="100" r="44"/><circle cx="100" cy="100" r="18"/>
+          <g id="petalRing">
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(30 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(60 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(90 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(120 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(150 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(180 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(210 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(240 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(270 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(300 100 100)"/>
+            <path d="M100 20 C 112 45, 112 60, 100 80 C 88 60, 88 45, 100 20Z" transform="rotate(330 100 100)"/>
+          </g>
+          <use href="#petalRing" transform="rotate(15 100 100) scale(.55) translate(82 82)"/>
+        </g>
+      </symbol>
+      <symbol id="mandapShape" viewBox="0 0 400 300">
+        <g fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M40 300 V120 M360 300 V120 M60 300 V130 M340 300 V130"/>
+          <path d="M20 120 H380 M30 110 Q200 -10 370 110"/>
+          <path d="M70 110 Q200 20 330 110"/>
+          <path d="M200 30 V8 M195 14 L200 4 L205 14"/>
+          <g>
+            <path d="M60 130 q20 30 40 0 q20 30 40 0 q20 30 40 0 q20 30 40 0 q20 30 40 0 q20 30 40 0 q20 30 40 0"/>
+          </g>
+          <path d="M170 300 L200 250 L230 300" />
+          <path d="M200 262 q-8 -14 0 -26 q8 12 0 26z" fill="currentColor" opacity=".6"/>
+        </g>
+      </symbol>
+      <symbol id="chandelierShape" viewBox="0 0 200 160">
+        <g fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M100 0 V40"/>
+          <path d="M30 70 Q100 110 170 70"/><path d="M50 60 Q100 90 150 60"/>
+          <path d="M100 40 L30 70 M100 40 L170 70 M100 40 L50 60 M100 40 L150 60"/>
+          <g fill="currentColor">
+            <path d="M30 70 l-4 12 l4 10 l4 -10z"/><path d="M65 84 l-4 12 l4 10 l4 -10z"/>
+            <path d="M100 90 l-4 14 l4 12 l4 -12z"/><path d="M135 84 l-4 12 l4 10 l4 -10z"/>
+            <path d="M170 70 l-4 12 l4 10 l4 -10z"/>
+          </g>
+          <circle cx="100" cy="40" r="5"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <script src="script.js?v=4"></script>
+</body>
+</html>
