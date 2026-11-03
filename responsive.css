@@ -1,0 +1,175 @@
+/* =========================================================
+   CROSS-DEVICE POLISH: phone, tablet, desktop
+   Loaded after styles.css
+   ========================================================= */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+body.locked { height: 100vh; height: 100dvh; }
+.opening { height: 100vh; height: 100dvh; }
+.hero, .event { min-height: 100vh; min-height: 100svh; }
+button, a { touch-action: manipulation; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 6px; }
+
+/* scroll cue sits at the bottom of the hero */
+.scroll-cue { bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 2; }
+
+/* player respects the iPhone home indicator */
+.player { bottom: calc(14px + env(safe-area-inset-bottom)); }
+
+/* ---------- progress bar ---------- */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
+.progress span {
+  display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ---------- chapter nav ---------- */
+.chapters {
+  position: fixed; z-index: 55; left: 50%;
+  top: calc(12px + env(safe-area-inset-top));
+  transform: translate(-50%, -160%);
+  display: flex; gap: 4px; padding: 5px;
+  border-radius: 999px;
+  background: rgba(15,10,8,.66);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,175,55,.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  max-width: calc(100vw - 20px);
+}
+.chapters.show { transform: translate(-50%, 0); }
+.chapters a {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .45rem .9rem; min-height: 38px; border-radius: 999px;
+  text-decoration: none; color: #fbf4e6;
+  font-family: var(--display); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  transition: background .35s ease, color .35s ease;
+  white-space: nowrap;
+}
+.chapters a i { width: 8px; height: 8px; border-radius: 50%; background: var(--d); box-shadow: 0 0 0 2px rgba(255,255,255,.15); transition: transform .35s ease; flex: none; }
+.chapters a.active { background: var(--d); color: #1a0f0a; }
+.chapters a.active i { background: #1a0f0a; transform: scale(1.2); }
+
+/* ---------- palette labels ---------- */
+.palette li { cursor: pointer; width: 38px; height: 38px; }
+.palette li.picked { transform: translateY(-4px) scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--accent), 0 6px 14px rgba(0,0,0,.3); }
+.swatch-name {
+  margin: .6rem 0 0; min-height: 1.4em;
+  font-family: var(--display); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; opacity: .75;
+}
+
+/* ---------- illustration interaction ---------- */
+.sleeve, .portrait-arch { cursor: zoom-in; }
+.sleeve { transform: perspective(1200px) rotateY(var(--tilt, 0deg)) rotateX(var(--ptilt, 0deg)); }
+.sleeve:active, .portrait-arch:active { filter: brightness(1.08); }
+
+/* ---------- lightbox ---------- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center;
+  padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+  background: rgba(8,5,4,.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: 0; transition: opacity .35s ease;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.open { opacity: 1; }
+.lightbox figure { margin: 0; max-width: min(1100px, 100%); text-align: center; transform: scale(.94); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.lightbox.open figure { transform: scale(1); }
+.lightbox img {
+  display: block; max-width: 100%; max-height: calc(100vh - 140px); max-height: calc(100dvh - 140px); margin: 0 auto;
+  border-radius: 12px; border: 1px solid rgba(212,175,55,.6);
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+.lightbox figcaption { margin-top: .9rem; color: #f1d98a; font-family: var(--script); font-size: clamp(1.6rem, 5vw, 2.4rem); line-height: 1.1; }
+.lb-close {
+  position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px;
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(212,175,55,.6);
+  background: rgba(255,255,255,.06); color: #fbf4e6; font-size: 1.8rem; line-height: 1; cursor: pointer;
+}
+.lb-hint { position: absolute; bottom: calc(10px + env(safe-area-inset-bottom)); margin: 0; font-size: .85rem; font-style: italic; color: rgba(251,244,230,.55); }
+body.lb-open { overflow: hidden; }
+
+/* ---------- touch devices: no sticky hover, tap feedback instead ---------- */
+@media (hover: none) {
+  .track:hover { background: none; padding-left: .8rem; }
+  .track:hover::before { height: 0; }
+  .track:active { background: rgba(255,255,255,.06); }
+  .track:active::before { height: 70%; }
+  .scene:hover .sleeve img { transform: none; }
+  .palette li:hover { transform: none; }
+  .btn:hover { transform: none; }
+  .btn:active { transform: scale(.97); }
+  .seal:hover { transform: none; }
+  .seal:active { transform: scale(.94); }
+}
+
+/* ---------- tablet landscape / small laptops ---------- */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .hero-grid { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 3rem; padding: 0 1rem; }
+  .event { padding: 6rem 2rem; }
+  .event-inner { gap: clamp(3rem, 8vw, 6rem); }
+  .event-title { font-size: clamp(3.4rem, 7vw, 5.2rem); }
+}
+
+/* ---------- tablet portrait ---------- */
+@media (min-width: 600px) and (max-width: 900px) {
+  .hero { padding: 5rem 2rem 6rem; }
+  .portrait { width: min(56vw, 380px); }
+  .scene { width: 72%; }
+  .event-copy { max-width: 560px; margin: 0 auto; }
+  .album-cover { width: min(52vw, 340px); }
+  .sides { max-width: 600px; margin: 0 auto; width: 100%; }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 599px) {
+  body { font-size: 17px; }
+  .hero { padding: 4.5rem 1rem 6.5rem; }
+  .hero-names .name { font-size: clamp(3.6rem, 19vw, 5rem); }
+  .hero-lede { font-size: 1.02rem; padding: 0 .4rem; }
+  .countdown { gap: .5rem; }
+  .countdown div { width: 22vw; max-width: 80px; }
+  .tracklist { padding: 5rem 1rem; }
+  .event { padding: 5.5rem 1rem 6.5rem; }
+  .scene { width: 80%; }
+  .scene figcaption { font-size: .58rem; left: 10px; bottom: 10px; padding: .3rem .7rem; }
+  .event-meta { font-size: .72rem; letter-spacing: .1em; }
+  .event-meta span { display: table; margin: 0 auto .5rem; }
+  .event-title { font-size: clamp(3.2rem, 15vw, 4.4rem); }
+  .attire-card { padding: 1.1rem 1.2rem; }
+  .attire-card p { font-size: 1.08rem; }
+  .palette { gap: .45rem; }
+  .palette li { width: 34px; height: 34px; }
+  .chapters a { padding: .45rem .6rem; font-size: .6rem; letter-spacing: .08em; gap: .3rem; }
+  .player { gap: .6rem; padding-right: .8rem; }
+  .now-title { font-size: .9rem; max-width: 46vw; }
+  .disco { right: -20px; }
+  .spotlight { width: 70vw; }
+  .finale { padding-bottom: calc(8rem + env(safe-area-inset-bottom)); }
+}
+@media (max-width: 370px) {
+  .chapters a span { display: none; }
+  .chapters a.active span { display: inline; }
+}
+
+/* ---------- landscape phones (short screens) ---------- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .opening-names { font-size: 2.6rem; margin-bottom: 1rem; }
+  .opening-kicker { margin-bottom: .2rem; }
+  .seal { width: 84px; height: 84px; }
+  .seal-text { font-size: 1.8rem; }
+  .opening-hint { margin-top: .8rem; }
+  .hero-grid { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); text-align: center; }
+  .portrait { width: 100%; }
+  .event-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; }
+  .event-reverse .scene { order: 2; }
+  .scene { width: 100%; }
+  .event-copy { text-align: left; }
+  .palette { justify-content: flex-start; }
+  .event-meta span { display: inline-block; margin: 0 .6rem 0 0; }
+  .chapters { top: 8px; }
+}
+
+/* faint gold rim so the record reads on dark sections too */
+.scene .disc { box-shadow: 0 0 0 1px rgba(212,175,55,.45), 0 0 24px rgba(212,175,55,.15), 0 20px 40px rgba(0,0,0,.35); }
